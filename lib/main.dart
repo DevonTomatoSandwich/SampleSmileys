@@ -3,8 +3,8 @@ import 'package:flutter_inapp_purchase/flutter_inapp_purchase.dart';
 import 'package:shared_preferences/shared_preferences.dart'; // for prefs
 import 'dart:io'; // for platform
 import 'dart:async'; // for StreamSubscription
-import 'package:samplefaces/info_dialog.dart'; // for dialog in UI
-import 'package:samplefaces/smiley.dart'; // class for smiley data
+import 'package:smileyfaces/info_dialog.dart'; // for dialog in UI
+import 'package:smileyfaces/smiley.dart'; // class for smiley data
 
 void main() {
   runApp(MyApp());
