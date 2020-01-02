@@ -1,4 +1,4 @@
-package com.mypackage.samplefaces
+package com.mypackage.smileyfaces
 
 import androidx.annotation.NonNull;
 import io.flutter.embedding.android.FlutterActivity
