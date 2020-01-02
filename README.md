@@ -12,8 +12,10 @@ The app has two sections:
 
 ## Why restore previous purchases with a button?
 I originally restored purchases automatically on initialising the app. This isn't very efficient as each time the user opens the app a connection to billing must take place checking if items were purchased before. Also if the user is offline, they can't connect then they will have to continue without their purchases. A better way to do it is saving the purchases locally either with shared preferences (used in this repo) or a database (I'm using Hive for flutter on my real app). In fact I'm sure you have to do it this way as Apple denied one of my reviews because I restored purchases automatically on initialising the app. Now when i open my app the flow is:
-  Open App > check purchases from local preferences > if no purchases in local preferences, check store > if purchases in store, set the product as being able to be restored by the user
-  
+1. Open App 
+2. Check purchases from local preferences 
+3. If no purchases in local preferences, check store 
+4. If purchases in store, set the product as being able to be restored by the user
 Another reason apple wants you to do this is so that if a user downloads the app on multiple devices with the same apple id, purchases can be restored across multiple devices.
 
 ## Get Started
