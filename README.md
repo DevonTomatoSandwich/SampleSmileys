@@ -16,6 +16,7 @@ I originally restored purchases automatically on initialising the app. This isn'
 2. Check purchases from local preferences 
 3. If no purchases in local preferences, check store 
 4. If purchases in store, set the product as being able to be restored by the user
+
 Another reason apple wants you to do this is so that if a user downloads the app on multiple devices with the same apple id, purchases can be restored across multiple devices.
 
 ## Get Started
