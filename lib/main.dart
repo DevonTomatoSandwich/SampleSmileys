@@ -3,8 +3,8 @@ import 'package:flutter_inapp_purchase/flutter_inapp_purchase.dart';
 import 'package:shared_preferences/shared_preferences.dart'; // for prefs
 import 'dart:io'; // for platform
 import 'dart:async'; // for StreamSubscription
-import 'package:smileyfaces/info_dialog.dart'; // for dialog in UI
-import 'package:smileyfaces/smiley.dart'; // class for smiley data
+import 'package:samplefaces/info_dialog.dart'; // for dialog in UI
+import 'package:samplefaces/smiley.dart'; // class for smiley data
 
 void main() {
   runApp(MyApp());
@@ -33,6 +33,9 @@ class StartState extends State<Start> {
   // It might take a while for the Dev Console or App Store Connect to review your build for testing
   // In the mean time you can set this to false and hot restart just to see how the UI works :)
   bool isUsingBilling = true;
+  
+  // This should not be changed in the current repo but in your real project change to false
+  bool isSandbox = true;
 
   List<Smiley> smileys = [
     Smiley('Smiley' , ': )'      , ''      , true , false), // smiley always purchased (free smiley)
@@ -63,7 +66,7 @@ class StartState extends State<Start> {
         // get purchase from prefs
         smiley.isPurchased = prefs.getBool(smiley.productID) ?? false;
         
-        if(!smiley.isPurchased){ // check allSmileysPurchase
+        if(!smiley.isPurchased){ // check allSmileysPurchased
           allSmileysPurchased = false;
         }
       }
@@ -102,12 +105,15 @@ class StartState extends State<Start> {
         print('connected: $connected');
       });
 
+      // todo SLOW_CARD fix slow test card issues on android
       _purchaseUpdatedSubscription = FlutterInappPurchase.purchaseUpdated.listen((purchasedItem) async {
         print('purchase-updated: $purchasedItem');
         
         try {
-
-          // todo validate reciept ?
+          
+          // todo VALIDATE implement validateReceipt
+          // validateReceipt(purchasedItem); // ? Question: should this be here
+          
           String result = await FlutterInappPurchase.instance.finishTransaction( // this also verifies the purchase
             purchasedItem, 
             developerPayloadAndroid: purchasedItem.developerPayloadAndroid, 
@@ -127,49 +133,20 @@ class StartState extends State<Start> {
         } 
         catch(err) {
           print('err.message = ${err.message}'); 
-          if(err.message == 'E_UNKNOWN'){
+          if(err.message == 'E_DEVELOPER_ERROR'){
             MyInfoDialog(
-              title: 'Unknown Connection Issue', 
-              message: 'Connection with the store may be delayed possibly due to slow connection to the store or a slow card.',
+              title: 'E_DEVELOPER_ERROR', 
+              message: 'Google is indicating that we have some issue connecting to payment.',
             ).display(context);
-          }
-          else{ // slow connection ? this doesn't always get called for slow card tests
-            print('PlatformException (slow connection)');
-
-            // dialog lets user know there is a slow connection
-            MyInfoDialog(
-              title: 'Slow Connection', 
-              message: 'Connection with the store may be delayed possibly due to slow connection to the store or a slow card.',
-            ).display(context);
-            
-            // todo test slow card fix
-            // use cases
-
-            // 1.
-            // click buy smiley with "Slow test card. Approves after a few minutes"
-            // wait for gmail reciept
-            // state doesn't update as expected but if you click "Verfify and Refresh" smiley is bought and is displayed
-            // Question: how can i get the state to update when the payment goes through (so the user doesn't have to restart the app)?
-
-            // 2.
-            // click buy smiley with "Slow test card. Approves after a few minutes"
-            // before gmail reciept is recieved click "Verfify and Refresh"
-            // Note that the purchase went through before the gmail reciept came through 
-            // Question: How can I check that the purchase actually went through
-
-            // 3.
-            // Same as 1 but "Slow test card. Declines after a few minutes"
-
-            // 4.
-            // Same as 2 but "Slow test card. Declines after a few minutes"
-
-            
           }
         }
       });
 
       _purchaseErrorSubscription = FlutterInappPurchase.purchaseError.listen((purchaseError) {
         print('purchase-error: $purchaseError');
+        if(purchaseError.code == 'E_UNKNOWN'){
+          print('This unknown error likely happens for when a card is declined immediately');
+        }
       });
       
     }
@@ -197,14 +174,43 @@ class StartState extends State<Start> {
     return true;
   }
 
-  // ? Question do we even need products for this application?
+  // todo VALIDATE setup validate Receipt
+  validateReceipt(PurchasedItem purchasedItem) async {
+    if(Platform.isIOS){
+      var receiptBody = {
+        'receipt-data': purchasedItem.transactionReceipt,
+        //'password': '******' // ? Question: for iOS password is "Only used for receipts that contain auto-renewable subscriptions."
+      };
+      var result = await FlutterInappPurchase.instance.validateReceiptIos(
+        receiptBody: receiptBody, 
+        isTest: isSandbox
+      );
+      print(result);
+    }
+    else if(Platform.isAndroid){
+      String accessToken; // todo VALIDATE setup getAccessToken()
+      assert(accessToken != null);
+
+      var result = await FlutterInappPurchase.instance.validateReceiptAndroid(
+        packageName: 'com.mypackage.samplefaces', // ? Question: does my app id go here?
+        productId: purchasedItem.productId,
+        productToken: purchasedItem.purchaseToken, // ? Question: is this the same?
+        accessToken: accessToken,
+        isSubscription: false,
+      );
+      print(result);
+    }
+    
+    
+  }
+
+  // ? Question: do we even need products for this application?
   Future _getProduct() async {
     print('_getProduct:');
     List<String> productLists = [];
     for(int i = 1; i < smileys.length; i++){
       productLists.add(smileys[i].productID);
     }
-
     
     try{
       List<IAPItem> items = await FlutterInappPurchase.instance.getProducts(productLists);
