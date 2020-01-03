@@ -1,5 +1,5 @@
 # SampleSmileys
-Tests non-consumable purchases of Smileys using @dooboolab 's plugin [flutter_inapp_purhcase](https://github.com/dooboolab/flutter_inapp_purchase)
+Tests non-consumable purchases of different smiley faces using @dooboolab 's plugin [flutter_inapp_purhcase](https://github.com/dooboolab/flutter_inapp_purchase)
 
 ## How does it work?
 
