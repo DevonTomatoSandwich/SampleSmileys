@@ -53,9 +53,9 @@ Then to make apk run
 `flutter build apk`
 
    During the build the terminal might give you warnings on
-   -	in_app_purchase: deprecated API
-   -	in_app_purchase: unsafe operations
-   -	shared_preferences: deprecated
+   -	flutter_inapp_purchase: uses or overrides a deprecated API
+   -	shared_preferences: FlutterPluginBinding has been deprecated
+   
    these can be ignored for now
 5. When complete navigate to build/app/outputs/apk/release
 6. Create a new app in the PDC
