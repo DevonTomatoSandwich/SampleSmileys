@@ -125,5 +125,5 @@ Another reason I made this is because I ran out of iOS devices to test on. It is
 The advantage of having an app on the side like this is that you can debug the app yourself and understand what and when everything happens without ruining the code in your actual project. I'm copying across alot of the methods in this repo so i can immediately use them in my real app.
 
 ## Issues
-- [ ] Problems with slow test cards.  See issue (to be written up)
-- [ ] Unsure how to validate reciept. See issue (to be written up)
+- [ ] Problems with slow test cards.  See [issue](https://github.com/DevonTomatoSandwich/SampleSmileys/issues/1)
+- [ ] Unsure how to validate reciept. Search for "todo" in main.dart (issue will be written up properly soon)
