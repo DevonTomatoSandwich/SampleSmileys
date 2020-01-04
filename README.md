@@ -81,11 +81,9 @@ See [here](https://support.google.com/googleplay/android-developer/answer/313121
     -	in pricing and distribution say the app is free and select at least one country to be available
     -	in store listing you will need 2 screenshots (upload the same screenshot twice ^\_^ ) and a feature graphic. I have blank files you can use for your upload with the correct dimentions [here](https://github.com/DevonTomatoSandwich/SampleSmileys/tree/master/screenshots).
 13. Now go back to App releases. Click edit release, click review
-Check your warnings
--	You should ignore a warning about Unoptimized APK since this is just a test. Also flutter is having problems with Android App Bundle so just ignore this for now
-Click rollout to alpha 
+Check your warnings. You should ignore a warning about Unoptimized APK since this is just a test. Also flutter is having problems with Android App Bundle so just ignore this for now. Click rollout to alpha 
 14. Send the opt in link to testers (there may be sometime before the link works possibly hours)
-15. When the link works you can debug with usb cable
+15. When the link works (don't install the alpha but instead) debug with usb cable
 
 #### On iOS
 1. In [apple developer](https://developer.apple.com) Click account > Certificates, Identifiers & Profiles > Identifiers
@@ -126,4 +124,4 @@ The advantage of having an app on the side like this is that you can debug the a
 
 ## Issues
 - [ ] Problems with slow test cards.  See [issue](https://github.com/DevonTomatoSandwich/SampleSmileys/issues/1)
-- [ ] Unsure how to validate reciept. Search for "todo" in main.dart (issue will be written up properly soon)
+- [ ] Unsure how to validate reciept. Search for "todo VALIDATE" in main.dart to see where I've started to implement this (issue will be written up properly soon)
